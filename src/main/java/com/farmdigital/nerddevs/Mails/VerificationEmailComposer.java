@@ -1,23 +1,17 @@
-package com.farmdigital.nerddevs.controller;
+package com.farmdigital.nerddevs.Mails;
 
 import com.farmdigital.nerddevs.security.JwtServices;
-import com.farmdigital.nerddevs.service.EmailService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
-public class EmailComposer {
+public class VerificationEmailComposer {
     private final JavaMailSenderImpl mailSender;
     private  final JwtServices jwtServices;
 //hello
@@ -43,6 +37,7 @@ public class EmailComposer {
             "</head>\n" +
             "<body style=\"font-family: 'Poppins', sans-serif; text-align: center; padding: 10px;\">\n" +
             "    <section>\n" +
+            "<img src='https://res.cloudinary.com/dlobwfi13/image/upload/v1688126792/mxg4e2owowyasgss3u36.png' alt=\"message icon\" style=\"height: 100px;\">"+
             "        <h4 style=\"padding-bottom: 10px;\">Thanks for joining Agri-connect </h4>\n" +
             "\n" +
             "<p style=\"text-align: left;\">To complete your profile we need you to confirm your email address for more communications </p>\n" +

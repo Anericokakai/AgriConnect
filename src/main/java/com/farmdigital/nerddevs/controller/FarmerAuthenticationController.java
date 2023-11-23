@@ -4,8 +4,6 @@ import com.farmdigital.nerddevs.Dto.FarmerRegistrationDto;
 import com.farmdigital.nerddevs.Dto.ResetPasswordDto;
 import com.farmdigital.nerddevs.service.UserRegistrationService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +22,7 @@ public class FarmerAuthenticationController {
 //    ! add user route
     @PostMapping("/user/register")
     public ResponseEntity<?> registerUse(@RequestBody @Valid FarmerRegistrationDto user) throws Exception{
-        var  res= userRegistrationService.saveUer(user);
+        var  res= userRegistrationService.saveUser(user);
 //1233
     return  ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
@@ -32,10 +30,9 @@ public class FarmerAuthenticationController {
 
     public  ResponseEntity<?> authenticateUser(@RequestBody @Valid AuthenticationDto request){
 
-var token=userRegistrationService.authenticateauser(request);
-Map<String ,String > respose=new HashMap<>();
-respose.put("token",token);
-        return  ResponseEntity.status(HttpStatus.OK).body(respose);
+var response=userRegistrationService.authenticateauser(request);
+
+        return  ResponseEntity.status(HttpStatus.OK).body(response);
     }
 // ! forgot password route
     @PostMapping("/user/reset_password")

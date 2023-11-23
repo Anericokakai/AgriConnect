@@ -3,7 +3,7 @@ package com.farmdigital.nerddevs.service;
 import com.farmdigital.nerddevs.Dto.AuthenticationDto;
 import com.farmdigital.nerddevs.Dto.FarmerRegistrationDto;
 import com.farmdigital.nerddevs.Exceptions.UserAlreadyExistException;
-import com.farmdigital.nerddevs.controller.EmailComposer;
+import com.farmdigital.nerddevs.Mails.VerificationEmailComposer;
 import com.farmdigital.nerddevs.model.Farmer;
 import com.farmdigital.nerddevs.model.Roles;
 import com.farmdigital.nerddevs.repository.FarmerRepository;
@@ -33,9 +33,9 @@ public class UserRegistrationService {
     private final JwtServices jwtServices;
     private final RolesRepository rolesRepository;
     private final Map<String, String> response = new HashMap<>();
-    private  final EmailComposer emailComposer;
+    private  final VerificationEmailComposer verificationEmailComposer;
     private final static Logger LOGGER = LoggerFactory.getLogger(UserRegistrationService.class);
-    public Map<String, String> saveUer(FarmerRegistrationDto user) throws Exception {
+    public Map<String, String> saveUser(FarmerRegistrationDto user) throws Exception {
 
         Roles role = rolesRepository.findByName("USER");
 
@@ -59,7 +59,7 @@ public class UserRegistrationService {
                 .build();
         farmerRepository.save(newUser);
 //        ! validate emails for the users;
-        emailComposer.sendVerificationEmail(newUser.getEmail());
+        verificationEmailComposer.sendVerificationEmail(newUser.getEmail());
         response.put("message", "user created successfully, please check your email to verify  your account !");
 
         return response;
@@ -86,9 +86,8 @@ public class UserRegistrationService {
 
     
 
-
-
-    public String authenticateauser(AuthenticationDto req) {
+    public Map<String ,String > authenticateauser(AuthenticationDto req) {
+        Map<String ,String > response=new HashMap<>();
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -107,11 +106,15 @@ public class UserRegistrationService {
 
         if(!user.isVerified()){
             //        ! validate emails for the users;
-            emailComposer.sendVerificationEmail(user.getEmail());
-            return "you have not verified your account , please check your email to verify your account!! ";
+            verificationEmailComposer.sendVerificationEmail(user.getEmail());
+response.put("errorMessage","you have not verified your account , please check your email to verify your account!!");
+return response;
         }
 //       Generate token
-        return jwtServices.generateAToken(user);
+
+        String token=jwtServices.generateAToken(user);
+        response.put("token",token);
+        return response;
 
     }
 //    todo test this email sending method
@@ -120,9 +123,8 @@ public class UserRegistrationService {
     public Map<String, String> changePassword(String email) throws EntityNotFoundException {
 
         Farmer farmer = farmerRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("invalid email adress"));
-
-//! else send email to steve to handle the logic
-        response.put("message", "check your email adress for a link to verify your password");
+//! send email to the user to change the password
+        response.put("message", "check your email address for a link to change  your password");
         return response;
     }
 }

@@ -2,6 +2,7 @@ package com.farmdigital.nerddevs.Service;
 import com.farmdigital.nerddevs.Dto.AuthenticationDto;
 import com.farmdigital.nerddevs.Dto.FarmerRegistrationDto;
 import com.farmdigital.nerddevs.Exceptions.UserAlreadyExistException;
+import com.farmdigital.nerddevs.Mails.VerificationEmailComposer;
 import com.farmdigital.nerddevs.model.Farmer;
 import com.farmdigital.nerddevs.model.Roles;
 import com.farmdigital.nerddevs.repository.FarmerRepository;
@@ -38,6 +39,8 @@ public class UserRegistrationServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
+    private VerificationEmailComposer verificationEmailComposer;
+    @Mock
     private AuthenticationManager authenticationManager;
     @Mock
     private JwtServices jwtServices;
@@ -46,6 +49,7 @@ public class UserRegistrationServiceTest {
 
     Farmer user;
     Roles roles;
+    Farmer verifiedFarmer;
     FarmerRegistrationDto newFarmer;
 
     @BeforeEach
@@ -63,6 +67,18 @@ public class UserRegistrationServiceTest {
                 .typeOfAccount("FARMER")
                 .verified(false)
                 .build();
+       verifiedFarmer= Farmer.builder()
+               .farmerId("123")
+               .id(1)
+               .email("anericokakai@gmail.com")
+               .name("anericokakai")
+               .password("123456")
+               .phoneNumber("792626899")
+               .registrationTime("11/17/2023 at 08:33 PM ")
+               .roles(Collections.singletonList(roles))
+               .typeOfAccount("FARMER")
+               .verified(true)
+               .build();
        roles= Roles.builder()
                .id(1)
                .name("USER").build();
@@ -70,7 +86,7 @@ public class UserRegistrationServiceTest {
                 .name("anerico")
                 .phoneNumber("792626899")
                 .email("anericokakai@gmail.com")
-                .password("anericokakai@2004")
+                .password("Anericokakai@2004")
                 .build();
     }
 
@@ -79,18 +95,13 @@ public class UserRegistrationServiceTest {
     @Order(1)
     public void assert_will_Create_newUSer() throws Exception {
         String  email="anericokakai@gmail.com";
-
-
         Mockito.when(farmerRepository.save(user)).thenReturn(user);
         Mockito.when(rolesRepository.findByName("USER")).thenReturn(roles);
-      Map<String ,String > repose=  userRegistrationService.saveUer(newFarmer);
+        Mockito.when(verificationEmailComposer.sendVerificationEmail(email)).thenReturn("email was sent successfully!");
+      Map<String ,String > repose=  userRegistrationService.saveUser(newFarmer);
       Map<String,String> expectedRe=new HashMap<>();
-      expectedRe.put("message","user created successfully");
+      expectedRe.put("message","user created successfully, please check your email to verify  your account !");
         assertEquals(repose,expectedRe);
-
-
-
-
     }
 
 
@@ -98,7 +109,7 @@ public class UserRegistrationServiceTest {
     @Order(2)
     public  void  assert_Will_throwException_ForExistingUser(){
         Mockito.when(farmerRepository.findByEmail(newFarmer.getEmail())).thenReturn(Optional.ofNullable(user));
-        assertThrows(UserAlreadyExistException.class,()->userRegistrationService.saveUer(newFarmer));
+        assertThrows(UserAlreadyExistException.class,()->userRegistrationService.saveUser(newFarmer));
 
     }
     @Test
@@ -122,7 +133,7 @@ public class UserRegistrationServiceTest {
     }
 @Test
     @Order(5)
-    public  void assert_will_AuthenticateUser(){
+    public  void assert_will_Not_Authenticate_UnVerified_User(){
         String  email="anericokakai@gmail.com";
         String  password="1234566";
     AuthenticationDto authenticationDto= AuthenticationDto
@@ -135,14 +146,51 @@ public class UserRegistrationServiceTest {
             password
     );
         Mockito.when(authenticationManager.authenticate(authenticationToken)).thenReturn(authenticationToken);
-
+        Mockito.when(verificationEmailComposer.sendVerificationEmail(email)).thenReturn("Email sent successfully");
         Mockito.when(farmerRepository.findByEmail(email)) .thenReturn(Optional.of(user));
         Mockito.when(jwtServices.generateAToken(user)).thenReturn("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbmVyaWNva2FrYWlAZ21haWwuY29tIiwibmFtZSI6ImFuZXJpY29rYWthaUBnbWFpbC5jb20iLCJpYXQiOjE1MTYyMzkwMjJ9.di54c7dhhSJu3nT9fFNmvQpvZncJQIy2nSTcrqoBOIk");
-        String  expectedToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbmVyaWNva2FrYWlAZ21haWwuY29tIiwibmFtZSI6ImFuZXJpY29rYWthaUBnbWFpbC5jb20iLCJpYXQiOjE1MTYyMzkwMjJ9.di54c7dhhSJu3nT9fFNmvQpvZncJQIy2nSTcrqoBOIk";
-      String  token=  userRegistrationService.authenticateauser(authenticationDto);
-      assertEquals(token,expectedToken);
+        String  expectedToken="you have not verified your account , please check your email to verify your account!!";
+      Map<String,String> response=  userRegistrationService.authenticateauser(authenticationDto);
+      String  errorMessage=response.get("errorMessage");
+      assertEquals(errorMessage,expectedToken);
 
 }
+    @Test
+    public  void assert_will_Authenticate_user_only_when_Account_is_Verified(){
+        String  token="yJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmVyaW" +
+                "NvbWlzaWtvQGdtYWlsLmNvbSIsImlhdCI6MTcwMDczNDAxMy" +
+                "wiZXhwIjoxNzAwNzM5NDEzfQ.uSQ6UvVB-LlTArlUt4nNr4X" +
+                "yHE5oBfgVY0EHMn5T8Rc";
+        String email="anericokakai@gmail.com";
+        String  password="Anericokakai@2004";
+Mockito.when(farmerRepository.findByEmail(verifiedFarmer.getEmail())).thenReturn(Optional.ofNullable(verifiedFarmer));
+AuthenticationDto userToAuthenticate= AuthenticationDto.builder()
+        .password(password)
+        .email(email).build();
+
+UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=
+         new UsernamePasswordAuthenticationToken(
+            email,
+            password
+         );
+Mockito.when(authenticationManager.authenticate(usernamePasswordAuthenticationToken)).thenReturn(usernamePasswordAuthenticationToken);
+String  expectedToken="yJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmVyaWNvbWlzaWtvQGdtYWl" +
+        "sLmNvbSIsImlhdCI6MTcwMDczNDAxMywiZXhwIjoxNzAwNzM5NDEz" +
+        "fQ.uSQ6UvVB-LlTArlUt4nNr4XyHE5oBfgVY0EHMn5T8Rc";
+Mockito.when(jwtServices.generateAToken(verifiedFarmer)).thenReturn(token);
+Map<String,String> result=userRegistrationService.authenticateauser(userToAuthenticate);
+assertEquals(result.get("token"),expectedToken);
+
+    }
+
+
+@Test
+    public  void assert_Will_throw_error_For_Invalid_Phone(){
+        String  invalidPhone="079303s30d34";
+    assertThrows(NumberFormatException.class,()->userRegistrationService.verifyPhoneNumber(invalidPhone));
+}
+
+
 
 
 }

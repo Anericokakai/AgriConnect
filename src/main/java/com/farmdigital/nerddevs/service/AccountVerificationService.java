@@ -20,8 +20,9 @@ public String  verifyUserAccount(String  token) throws InvalidAuthenticationExce
     String  email= jwtServices.extractUsername(token);
     boolean  isAValidUser= jwtServices.CheckTokenExpiryForAccountVerification(token,email);
 //    ! update the user status to be verified
-    Optional<Farmer> userToUpdate= farmerRepository.findByEmail(email);
-    userToUpdate.ifPresent(farmer -> farmer.setVerified(true));
+    Farmer userToUpdate= farmerRepository.findByEmail(email).get();
+    userToUpdate.setVerified(true);
+    farmerRepository.save(userToUpdate);
     return " user account verification successful";
 }
 }

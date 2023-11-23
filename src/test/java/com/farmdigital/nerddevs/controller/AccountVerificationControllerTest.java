@@ -5,6 +5,7 @@ import com.farmdigital.nerddevs.Exceptions.ExceptionController.VerificationContr
 import com.farmdigital.nerddevs.Exceptions.InvalidAuthenticationException;
 import com.farmdigital.nerddevs.service.AccountVerificationService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -80,8 +81,10 @@ public class AccountVerificationControllerTest {
                         .param("token",token))
                 .andExpect(result -> assertTrue(result.getResolvedException()
                 instanceof InvalidAuthenticationException))
-//                .andExpect(jsonPath("$.errorMessage").value(expectedError))
+               .andExpect(jsonPath("$.errorMessage").value(expectedError))
                 .andDo(print());
 
 }
+
+
 }

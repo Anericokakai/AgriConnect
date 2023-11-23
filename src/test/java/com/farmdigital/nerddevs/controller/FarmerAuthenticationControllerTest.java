@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import java.net.http.HttpHeaders;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,26 +59,29 @@ public class FarmerAuthenticationControllerTest {
                 .name("anericokakai")
                 .email("anericokakai@gmail.com")
                 .password("Anericokakai@2004")
-                .phoneNumber("792626899")
+                .phoneNumber("0792626899")
                 .build();
     }
 
     @Test
     @Order(1)
-    public void assert_willCreateAUser() throws Exception {
+    public void assert_willCreate_A_User_And_sendEmail() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
 
 
-        response.put("message", "user created successfully");
+        response.put("message", "user created successfully, please check your email to verify  your account !");
 
         String request = objectMapper.writeValueAsString(newFarmer);
-        Mockito.when(userRegistrationService.saveUer(newFarmer)).thenReturn(response);
+        Mockito.when(userRegistrationService.saveUser(newFarmer)).thenReturn(response);
         mockMvc.perform(post(baseUrl + "/super/user/register")
                         .contentType("application/json")
                         .characterEncoding(StandardCharsets.UTF_8).content(request))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.message").value(response.get("message")))
                 .andDo(print());
     }
+
+
 
     @Test
     @Order(2)
@@ -97,7 +99,7 @@ public class FarmerAuthenticationControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andExpect(result -> assertTrue(result.getResolvedException()
                         instanceof MethodArgumentNotValidException))
-                .andExpect(jsonPath("$.phoneNumber").value("phone number is a requirement in order to continue with your registarion"))
+                .andExpect(jsonPath("$.phoneNumber").value("phone number is a requirement in order to continue with your registration"))
                 .andExpect(jsonPath("$.name").value("name cannot be empty"))
                 .andDo(print());
     }
@@ -127,10 +129,12 @@ public class FarmerAuthenticationControllerTest {
     @Order(4)
     public void assert_will_AuthenicateUser() throws Exception {
         String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbmVyaWNva2FrYWlAZ21haWwuY29tIiwibmFtZSI6ImFuZXJpY29rYWthaUBnbWFpbC5jb20iLCJpYXQiOjE1MTYyMzkwMjJ9.di54c7dhhSJu3nT9fFNmvQpvZncJQIy2nSTcrqoBOIk";
+        Map<String ,String > expectedResponse=new HashMap<>();
+        expectedResponse.put("token",token);
         AuthenticationDto authenticationDto = AuthenticationDto.builder()
                 .email("anericokakai@gmail.com").password("anerico").build();
         String request = mapper.writeValueAsString(authenticationDto);
-        Mockito.when(userRegistrationService.authenticateauser(authenticationDto)).thenReturn(token);
+        Mockito.when(userRegistrationService.authenticateauser(authenticationDto)).thenReturn(expectedResponse);
         mockMvc.perform(post(baseUrl + "/super/user/authenticate")
                         .content(request).contentType("application/json"))
                 .andExpect(jsonPath("$.token").value(token))
