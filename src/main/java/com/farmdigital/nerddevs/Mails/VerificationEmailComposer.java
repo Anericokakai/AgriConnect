@@ -37,7 +37,7 @@ public class VerificationEmailComposer {
             "</head>\n" +
             "<body style=\"font-family: 'Poppins', sans-serif; text-align: center; padding: 10px;\">\n" +
             "    <section>\n" +
-            "<img src='https://github.com/Anericokakai/AgriConnect/blob/main/src/main/resources/mail.svg' alt=\"message icon\" style=\"height: 100px;\">"+
+            "<img src='https://res.cloudinary.com/dlobwfi13/image/upload/v1700778228/upbobhxttjpoo2qzypgw.png' alt=\"message icon\" style=\"height: 100px;\">"+
             "        <h4 style=\"padding-bottom: 10px;\">Thanks for joining Agri-connect </h4>\n" +
             "\n" +
             "<p style=\"text-align: left;\">To complete your profile we need you to confirm your email address for more communications </p>\n" +
@@ -46,11 +46,11 @@ public class VerificationEmailComposer {
             "<p >All the best</p>\n" +
             "<p>The Nerds developers</p>\n" +
             "<div style=\"text-align: center; display: flex; align-items: center; justify-content: center; gap: 2em; flex-wrap: wrap;\">\n" +
-            "    <i class=\"fa-brands fa-twitter\" style=\" font-size: 20px; color:#1DA1F2 ; cursor: pointer;\"></i>\n" +
-            "    <i class=\"fa-brands fa-linkedin\" style=\"font-size: 20px; color: #0077b5;cursor: pointer;\"></i>\n" +
-            "    <i class=\"fa-brands fa-discord\" style=\"font-size: 20px; color: #4682B4;cursor: pointer;\"></i>\n" +
-            "    <i class=\"fa-brands fa-instagram\" style=\"font-size: 20px; color:  #fccc63;cursor: pointer;\"></i>\n" +
-            "    <i class=\"fa-brands fa-youtube \" style=\"font-size: 20px; color: #CD201F;cursor: pointer;\"></i>\n" +
+            "<a style='margin:20px' href='https://www.linkedin.com/in/anerico-kakai-600b80258/'><img src='https://res.cloudinary.com/dlobwfi13/image/upload/v1700779166/zdspebb7rhdme0aiw0xy.png' alt=\"linked in icon\" style=\"height: 40px;cursor: pointer;\"></a>\n" +
+            "<a href='https://twitter.com/nerdevK'style='margin:20px' ><img src='https://res.cloudinary.com/dlobwfi13/image/upload/v1700779626/tnitmtgsfamuufuglqel.png' alt=\"X  icon\" style=\"height: 40px;cursor: pointer;\"></a>\n"+
+            "<a href='https://www.instagram.com/r.ic.o_k/'style='margin:20px' ><img src='https://res.cloudinary.com/dlobwfi13/image/upload/v1700779703/uxun92f3q2tnewafvvfs.png' alt=\"instagram in icon\" style=\"height: 40px; cursor: pointer;\"></a>\n"+
+            "<a href=''style='margin:20px' ><img src='https://res.cloudinary.com/dlobwfi13/image/upload/v1700779786/xdyw2bl83fmpidgbcnaw.png' alt=\"you tube in icon\" style=\"height: 40px; cursor: pointer;\"></a>\n"+
+
             "</div>\n" +
             "    </section>\n" +
             "\n" +
