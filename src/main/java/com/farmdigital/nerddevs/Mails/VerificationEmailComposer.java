@@ -37,7 +37,7 @@ public class VerificationEmailComposer {
             "</head>\n" +
             "<body style=\"font-family: 'Poppins', sans-serif; text-align: center; padding: 10px;\">\n" +
             "    <section>\n" +
-            "<img src='https://res.cloudinary.com/dlobwfi13/image/upload/v1688126792/mxg4e2owowyasgss3u36.png' alt=\"message icon\" style=\"height: 100px;\">"+
+            "<img src='https://github.com/Anericokakai/AgriConnect/blob/main/src/main/resources/mail.svg' alt=\"message icon\" style=\"height: 100px;\">"+
             "        <h4 style=\"padding-bottom: 10px;\">Thanks for joining Agri-connect </h4>\n" +
             "\n" +
             "<p style=\"text-align: left;\">To complete your profile we need you to confirm your email address for more communications </p>\n" +
