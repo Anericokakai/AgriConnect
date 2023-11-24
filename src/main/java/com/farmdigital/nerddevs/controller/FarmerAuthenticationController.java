@@ -9,8 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,9 +34,18 @@ var response=userRegistrationService.authenticateauser(request);
         return  ResponseEntity.status(HttpStatus.OK).body(response);
     }
 // ! forgot password route
-    @PostMapping("/user/reset_password")
+    @PostMapping("/user/forgot_password")
     public  ResponseEntity<?> forgotPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto){
-        var message= userRegistrationService.changePassword(resetPasswordDto.getEmail());
+        var message= userRegistrationService.forgotPassword(resetPasswordDto.getEmail());
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(message);
     }
+    @PutMapping("/user/forgot_password/reset")
+    public  ResponseEntity<?> PasswordReset(@RequestParam("password")String  password,@RequestParam("token")String token){
+
+        var message=userRegistrationService.resetPassword(password,token);
+        URI uri=URI.create("/login");
+        return ResponseEntity.created(uri).body(message);
+
+    }
+
 }

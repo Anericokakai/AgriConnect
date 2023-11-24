@@ -150,8 +150,8 @@ public class UserRegistrationServiceTest {
         Mockito.when(farmerRepository.findByEmail(email)) .thenReturn(Optional.of(user));
         Mockito.when(jwtServices.generateAToken(user)).thenReturn("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbmVyaWNva2FrYWlAZ21haWwuY29tIiwibmFtZSI6ImFuZXJpY29rYWthaUBnbWFpbC5jb20iLCJpYXQiOjE1MTYyMzkwMjJ9.di54c7dhhSJu3nT9fFNmvQpvZncJQIy2nSTcrqoBOIk");
         String  expectedToken="you have not verified your account , please check your email to verify your account!!";
-      Map<String,String> response=  userRegistrationService.authenticateauser(authenticationDto);
-      String  errorMessage=response.get("errorMessage");
+      Map<String,Object> response=  userRegistrationService.authenticateauser(authenticationDto);
+      Object  errorMessage=response.get("errorMessage");
       assertEquals(errorMessage,expectedToken);
 
 }
@@ -178,7 +178,7 @@ String  expectedToken="yJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmVyaWNvbWlzaWtvQGdtYWl" 
         "sLmNvbSIsImlhdCI6MTcwMDczNDAxMywiZXhwIjoxNzAwNzM5NDEz" +
         "fQ.uSQ6UvVB-LlTArlUt4nNr4XyHE5oBfgVY0EHMn5T8Rc";
 Mockito.when(jwtServices.generateAToken(verifiedFarmer)).thenReturn(token);
-Map<String,String> result=userRegistrationService.authenticateauser(userToAuthenticate);
+Map<String,Object> result=userRegistrationService.authenticateauser(userToAuthenticate);
 assertEquals(result.get("token"),expectedToken);
 
     }

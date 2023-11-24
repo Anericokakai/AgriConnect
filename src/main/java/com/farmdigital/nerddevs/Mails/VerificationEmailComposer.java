@@ -19,7 +19,7 @@ public class VerificationEmailComposer {
     public String  sendVerificationEmail(String  email){
         String  token=jwtServices.generateAtokenWithoutUserdetails(new HashMap<>(),email);
 
-    String Subject = "Verify your Agri-connect account";
+    String Subject = " \uD83D\uDCE9 Verify your Agri-connect account";
     String  content= " <!DOCTYPE html>\n" +
             "<html lang=\"en\">\n" +
             "<head>\n" +

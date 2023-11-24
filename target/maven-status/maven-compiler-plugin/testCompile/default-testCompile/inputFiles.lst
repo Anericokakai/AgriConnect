@@ -1,2 +1,5 @@
+/home/rico/projects/springProjects/Farm-Digital/src/test/java/com/farmdigital/nerddevs/controller/FarmerAuthenticationControllerTest.java
+/home/rico/projects/springProjects/Farm-Digital/src/test/java/com/farmdigital/nerddevs/Security/JWtServiceTest.java
 /home/rico/projects/springProjects/Farm-Digital/src/test/java/com/farmdigital/nerddevs/NerddevsApplicationTests.java
 /home/rico/projects/springProjects/Farm-Digital/src/test/java/com/farmdigital/nerddevs/Service/UserRegistrationServiceTest.java
+/home/rico/projects/springProjects/Farm-Digital/src/test/java/com/farmdigital/nerddevs/controller/AccountVerificationControllerTest.java

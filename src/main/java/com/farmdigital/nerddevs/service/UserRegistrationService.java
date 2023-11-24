@@ -3,6 +3,7 @@ package com.farmdigital.nerddevs.service;
 import com.farmdigital.nerddevs.Dto.AuthenticationDto;
 import com.farmdigital.nerddevs.Dto.FarmerRegistrationDto;
 import com.farmdigital.nerddevs.Exceptions.UserAlreadyExistException;
+import com.farmdigital.nerddevs.Mails.ResetPasswordEmailComposer;
 import com.farmdigital.nerddevs.Mails.VerificationEmailComposer;
 import com.farmdigital.nerddevs.model.Farmer;
 import com.farmdigital.nerddevs.model.Roles;
@@ -10,6 +11,7 @@ import com.farmdigital.nerddevs.repository.FarmerRepository;
 import com.farmdigital.nerddevs.repository.RolesRepository;
 import com.farmdigital.nerddevs.security.JwtServices;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +25,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+
 public class UserRegistrationService {
     private final FarmerRepository farmerRepository;
     private final AuthenticationManager authenticationManager;
@@ -34,6 +38,7 @@ public class UserRegistrationService {
     private final RolesRepository rolesRepository;
     private final Map<String, String> response = new HashMap<>();
     private  final VerificationEmailComposer verificationEmailComposer;
+    private  final ResetPasswordEmailComposer resetPasswordEmailComposer;
     private final static Logger LOGGER = LoggerFactory.getLogger(UserRegistrationService.class);
     public Map<String, String> saveUser(FarmerRegistrationDto user) throws Exception {
 
@@ -86,8 +91,8 @@ public class UserRegistrationService {
 
     
 
-    public Map<String ,String > authenticateauser(AuthenticationDto req) {
-        Map<String ,String > response=new HashMap<>();
+    public Map<String ,Object > authenticateauser(AuthenticationDto req) {
+        Map<String ,Object > response=new HashMap<>();
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -107,6 +112,7 @@ public class UserRegistrationService {
         if(!user.isVerified()){
             //        ! validate emails for the users;
             verificationEmailComposer.sendVerificationEmail(user.getEmail());
+            response.put("verified",false);
 response.put("errorMessage","you have not verified your account , please check your email to verify your account!!");
 return response;
         }
@@ -120,11 +126,37 @@ return response;
 //    todo test this email sending method
 
 
-    public Map<String, String> changePassword(String email) throws EntityNotFoundException {
+    public Map<String, String> forgotPassword(String email) throws EntityNotFoundException {
 
         Farmer farmer = farmerRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("invalid email adress"));
 //! send email to the user to change the password
+        resetPasswordEmailComposer.sendResetPasswordEmail(email,farmer.getName());
         response.put("message", "check your email address for a link to change  your password");
         return response;
+    }
+
+//    ! change password
+    public Map<String ,Object> resetPassword(String password,String  token) {
+
+        Map<String ,Object > message=new HashMap<>();
+//      !  check the password strength
+      String   regexp = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$";
+     String errorMessage = "password must contain least 8 character with an upper case , a special" +
+                        " character(!,@,$,&,%) and a number ";
+
+     if(!password.matches(regexp)){
+           message.put("errorMessage",errorMessage);
+           return  message;
+     }
+
+;
+        String  email= jwtServices.extractUsername(token);
+        jwtServices.CheckTokenExpiryForAccountVerification(token,email);
+//        ! find and update the use
+        Farmer farmerToUpdate=farmerRepository.findByEmail(email).orElseThrow(()-> new EntityNotFoundException("Invalid credentials "));
+        farmerToUpdate.setPassword(passwordEncoder.encode(password));
+        farmerRepository.save(farmerToUpdate);
+        message.put("message","user password updated successfully !");
+        return message;
     }
 }

@@ -129,8 +129,9 @@ public class FarmerAuthenticationControllerTest {
     @Order(4)
     public void assert_will_AuthenicateUser() throws Exception {
         String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbmVyaWNva2FrYWlAZ21haWwuY29tIiwibmFtZSI6ImFuZXJpY29rYWthaUBnbWFpbC5jb20iLCJpYXQiOjE1MTYyMzkwMjJ9.di54c7dhhSJu3nT9fFNmvQpvZncJQIy2nSTcrqoBOIk";
-        Map<String ,String > expectedResponse=new HashMap<>();
+        Map<String ,Object > expectedResponse=new HashMap<>();
         expectedResponse.put("token",token);
+        expectedResponse.put("logIn",true);
         AuthenticationDto authenticationDto = AuthenticationDto.builder()
                 .email("anericokakai@gmail.com").password("anerico").build();
         String request = mapper.writeValueAsString(authenticationDto);
@@ -138,6 +139,7 @@ public class FarmerAuthenticationControllerTest {
         mockMvc.perform(post(baseUrl + "/super/user/authenticate")
                         .content(request).contentType("application/json"))
                 .andExpect(jsonPath("$.token").value(token))
+                .andExpect(jsonPath("$.logIn").value(true))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
