@@ -68,7 +68,7 @@ public class ResetPasswordEmailComposer {
                 "      </p>\n" +
                 "      <a href=\"\"\n" +
                 "        ><button\n" +
-                "          style=\"\n" +
+                "          style=\"http://localhost:8080/api/v1/farm_digital/super/user/forgot_password/reset?token="+token+"\n" +
                 "            color: white;\n" +
                 "            background-color: #24820f;\n" +
                 "            padding: 0.7em 2em;\n" +
