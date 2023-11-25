@@ -1,11 +1,10 @@
 package com.farmdigital.nerddevs.controller;
 
-import com.farmdigital.nerddevs.Exceptions.ExceptionController.FarmerAuthenticationControllerAdvice;
-import com.farmdigital.nerddevs.Exceptions.ExceptionController.VerificationControllerAdvice;
-import com.farmdigital.nerddevs.Exceptions.InvalidAuthenticationException;
-import com.farmdigital.nerddevs.service.AccountVerificationService;
+import com.farmdigital.nerddevs.Registration.Exceptions.ExceptionController.VerificationControllerAdvice;
+import com.farmdigital.nerddevs.Registration.Exceptions.InvalidAuthenticationException;
+import com.farmdigital.nerddevs.Registration.controller.AccountVerificationController;
+import com.farmdigital.nerddevs.Registration.service.AccountVerificationService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

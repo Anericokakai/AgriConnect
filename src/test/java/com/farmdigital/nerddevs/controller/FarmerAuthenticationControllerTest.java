@@ -1,9 +1,10 @@
 package com.farmdigital.nerddevs.controller;
 
-import com.farmdigital.nerddevs.Dto.AuthenticationDto;
-import com.farmdigital.nerddevs.Dto.FarmerRegistrationDto;
-import com.farmdigital.nerddevs.Exceptions.ExceptionController.FarmerAuthenticationControllerAdvice;
-import com.farmdigital.nerddevs.service.UserRegistrationService;
+import com.farmdigital.nerddevs.Registration.Dto.AuthenticationDto;
+import com.farmdigital.nerddevs.Registration.Dto.FarmerRegistrationDto;
+import com.farmdigital.nerddevs.Registration.Exceptions.ExceptionController.FarmerAuthenticationControllerAdvice;
+import com.farmdigital.nerddevs.Registration.controller.FarmerAuthenticationController;
+import com.farmdigital.nerddevs.Registration.service.UserRegistrationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;

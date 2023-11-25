@@ -1,7 +1,6 @@
 package com.farmdigital.nerddevs.controller;
 
 import com.farmdigital.nerddevs.model.FarmerProfileModel;
-import com.farmdigital.nerddevs.repository.FarmerProfileRepository;
 import com.farmdigital.nerddevs.service.FarmerProfileService;
 import io.jsonwebtoken.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;

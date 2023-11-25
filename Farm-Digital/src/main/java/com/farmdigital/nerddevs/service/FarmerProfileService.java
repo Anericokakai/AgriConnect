@@ -1,7 +1,6 @@
 package com.farmdigital.nerddevs.service;
 
 import com.farmdigital.nerddevs.model.FarmerProfileModel;
-import com.farmdigital.nerddevs.repository.FarmerProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
