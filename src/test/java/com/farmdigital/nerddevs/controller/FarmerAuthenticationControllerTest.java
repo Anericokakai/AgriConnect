@@ -149,7 +149,7 @@ public class FarmerAuthenticationControllerTest {
     @Order(5)
     public void assertWillThrowBlankEmailException() throws Exception {
         String request = mapper.writeValueAsString("");
-        mockMvc.perform(post(baseUrl + "/super/user/reset_password")
+        mockMvc.perform(post(baseUrl + "/super/user/forgot_password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request)).andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.email").value("email cannot be blank"))
