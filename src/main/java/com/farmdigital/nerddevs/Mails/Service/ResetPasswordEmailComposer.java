@@ -66,9 +66,9 @@ public class ResetPasswordEmailComposer {
                 "        Hello , " + name + " , Click the link below to change your password .The link\n" +
                 "        will expire in one hour\n" +
                 "      </p>\n" +
-                "      <a href=\"\"\n" +
+                "      <a href=\"http://localhost:8080/api/v1/farm_digital/super/user/forgot_password/reset?token="+token+"\"+token+\"\n" +
                 "        ><button\n" +
-                "          style=\"http://localhost:8080/api/v1/farm_digital/super/user/forgot_password/reset?token="+token+"\n" +
+                "          style=\"" +
                 "            color: white;\n" +
                 "            background-color: #24820f;\n" +
                 "            padding: 0.7em 2em;\n" +

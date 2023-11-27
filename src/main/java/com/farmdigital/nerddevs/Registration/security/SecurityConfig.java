@@ -32,7 +32,7 @@ public class SecurityConfig {
                     .requestMatchers("/api/v1/agri_connect/verify/**")
                     .permitAll()
                     .anyRequest()
-                    .permitAll()
+                    .authenticated()
 
             )
             .sessionManagement(sess->sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authenticationProvider(authenticationProvider)

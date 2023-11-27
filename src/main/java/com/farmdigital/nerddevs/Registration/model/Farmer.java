@@ -1,6 +1,7 @@
 package com.farmdigital.nerddevs.Registration.model;
 
 
+import com.farmdigital.nerddevs.Profile.model.Profile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,6 +49,9 @@ public class Farmer implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Roles> roles = new ArrayList<>();
 
+@OneToOne(cascade = CascadeType.ALL)
+@JoinColumn(name = "profile_id",referencedColumnName = "id")
+private  Profile profile;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
