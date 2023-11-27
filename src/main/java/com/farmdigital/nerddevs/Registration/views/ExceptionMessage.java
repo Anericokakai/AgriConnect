@@ -21,7 +21,7 @@ public class ExceptionMessage {
                 "<body style=\"text-align: center \">\n" +
                 "\n" +
                 "\n" +
-                "<h1 style=\"margin-top: 5em\">There was an error while updating your password ! </h1>\n" +
+                "<h1 style=\"margin-top: 5em;color: red\">There was an error while updating your password ! </h1>\n" +
                  "<p> the reason is that "+ reason+"</p>"+
                 "<p> click this link to try  again <a href=\"http://localhost:8080/api/v1/agri_connect/super/user/authenticate\"> retry </a>  </p>\n" +
                 "</body>\n" +
