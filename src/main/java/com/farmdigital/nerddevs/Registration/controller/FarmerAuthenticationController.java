@@ -4,6 +4,8 @@ import com.farmdigital.nerddevs.Registration.Dto.FarmerRegistrationDto;
 import com.farmdigital.nerddevs.Registration.Dto.Greeting;
 import com.farmdigital.nerddevs.Registration.Dto.ResetPasswordDto;
 import com.farmdigital.nerddevs.Registration.service.UserRegistrationService;
+import com.farmdigital.nerddevs.Registration.views.ExceptionMessage;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,10 +19,10 @@ import java.net.URI;
 @RestController
 @RequiredArgsConstructor
 
-@RequestMapping("/api/v1/farm_digital/super")
+@RequestMapping("/api/v1/agri_connect/super")
 public class FarmerAuthenticationController {
     private  final UserRegistrationService userRegistrationService;
-
+private final  ExceptionMessage exceptionMessage;
 //    ! add user route
     @PostMapping("/user/register")
     public ResponseEntity<?> registerUse(@RequestBody @Valid FarmerRegistrationDto user) throws Exception{
@@ -28,6 +30,8 @@ public class FarmerAuthenticationController {
 //1233
     return  ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
+
+//    ! login user
     @PostMapping("/user/authenticate")
 
     public  ResponseEntity<?> authenticateUser(@RequestBody @Valid AuthenticationDto request){
@@ -43,14 +47,7 @@ var response=userRegistrationService.authenticateauser(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(message);
     }
 
-    @PutMapping("/user/forgot_password/reset")
-    public  ResponseEntity<?> PasswordReset(@RequestParam("password")String  password,@RequestParam("token")String token){
 
-        var message=userRegistrationService.resetPassword(password,token);
-        URI uri=URI.create("/login");
-        return ResponseEntity.created(uri).body(message);
-
-    }
 
 //   ! reset password
     @PostMapping("/user/forgot_password/reset")
@@ -64,11 +61,15 @@ var response=userRegistrationService.authenticateauser(request);
             modelAndView.setViewName("reply");
             return modelAndView;
         } catch (Exception ex){
-            return "<h2>an error occurred while changing  your password<.h2> " +
-                    "<p>this could be due to some reasons one being your link has expired </p> " +ex.getMessage();
+
+            if(ex instanceof ExpiredJwtException) {
+                String  reason=" your token has expired , please request for another email in order to change your password .Remember that the link expires in in 20 minutes ";
+                return exceptionMessage.sendBackError(reason) ;
+            }
 
         }
 
+        return "invalid token";
     }
 
 

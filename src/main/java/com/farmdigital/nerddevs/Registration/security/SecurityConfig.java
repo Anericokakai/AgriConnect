@@ -27,7 +27,7 @@ public class SecurityConfig {
     httpSecurity.csrf(AbstractHttpConfigurer::disable)
             .cors(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests((req)->req
-                    .requestMatchers("/api/v1/farm_digital/super/**")
+                    .requestMatchers("/api/v1/agri_connect/super/**")
                     .permitAll()
                     .requestMatchers("/api/v1/agri_connect/verify/**")
                     .permitAll()

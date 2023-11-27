@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/farm_digital/user")
+@RequestMapping("/api/v1/agri_connect/user")
 public class Test {
     @GetMapping
     public  String  test() {
