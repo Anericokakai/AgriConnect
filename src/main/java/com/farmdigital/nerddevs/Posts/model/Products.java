@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class Products {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String productTittle;
     private int productPrice;
     private  String  imageUrl;
@@ -26,5 +27,8 @@ public class Products {
     private int likes;
     private String  pickUpStation;
     private String productStatus;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "profile_id")
+    private  Profile profile;
 
 }

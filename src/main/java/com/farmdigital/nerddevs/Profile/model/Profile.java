@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 @Data
 @Builder
@@ -30,8 +31,8 @@ public class Profile {
     private boolean  active=false;
     private String   lastSeen;
     private String  updatedAt;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "farmerProfFK",referencedColumnName = "id")
-    private List<Products> products;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "profile")
+
+    private List<Products> products= new ArrayList<>();
 
 }
