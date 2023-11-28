@@ -1,5 +1,6 @@
 package com.farmdigital.nerddevs.Posts.model;
 
+import com.farmdigital.nerddevs.Profile.model.Profile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,4 +26,5 @@ public class Products {
     private int likes;
     private String  pickUpStation;
     private String productStatus;
+
 }

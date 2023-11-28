@@ -1,5 +1,6 @@
 package com.farmdigital.nerddevs.Profile.model;
 
+import com.farmdigital.nerddevs.Posts.model.Products;
 import com.farmdigital.nerddevs.Registration.model.Farmer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,5 +30,8 @@ public class Profile {
     private boolean  active=false;
     private String   lastSeen;
     private String  updatedAt;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "farmerProfFK",referencedColumnName = "id")
+    private List<Products> products;
 
 }
