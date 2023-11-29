@@ -118,9 +118,6 @@ public class JwtServices {
     }
 //    ! check token expiry for a verification email
 
-
-
-
     public boolean CheckTokenExpiryForAccountVerification(String token,String  email) throws InvalidAuthenticationException {
         LOGGER.info(email);
 //            extract the email from the token

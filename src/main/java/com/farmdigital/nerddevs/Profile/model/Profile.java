@@ -3,15 +3,13 @@ package com.farmdigital.nerddevs.Profile.model;
 import com.farmdigital.nerddevs.Posts.model.Products;
 import com.farmdigital.nerddevs.Registration.model.Farmer;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 @NoArgsConstructor
@@ -31,8 +29,7 @@ public class Profile {
     private boolean  active=false;
     private String   lastSeen;
     private String  updatedAt;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "profile")
-
-    private List<Products> products= new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "profile",fetch = FetchType.LAZY)
+    private List<Products> products;
 
 }

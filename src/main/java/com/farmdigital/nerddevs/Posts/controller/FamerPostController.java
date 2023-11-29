@@ -4,10 +4,7 @@ import com.farmdigital.nerddevs.Posts.Dto.ProductDto;
 import com.farmdigital.nerddevs.Posts.Service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -16,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class FamerPostController {
     private final PostService postService;
 
-    @PostMapping("/create_post")
-    public ResponseEntity<?> createNewPost(@RequestBody ProductDto productDto){
-        postService.createPost(productDto);
+    @PostMapping("/create_post/{userId}")
+    public ResponseEntity<?> createNewPost(@RequestBody ProductDto productDto,@PathVariable("userId")int  userId){
+   var res=postService.createPost(productDto,userId);
 
 
-        return null;
+        return  ResponseEntity.status(200).body(res);
 
     }
 

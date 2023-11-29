@@ -55,7 +55,7 @@ public class FarmerAuthenticationControllerTest {
                 .standaloneSetup(farmerAuthenticationController)
                 .setControllerAdvice(new FarmerAuthenticationControllerAdvice())
                 .build();
-        baseUrl = "/api/v1/farm_digital";
+        baseUrl = "/api/v1/agri_connect";
         newFarmer = FarmerRegistrationDto.builder()
                 .name("anericokakai")
                 .email("anericokakai@gmail.com")
