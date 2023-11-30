@@ -26,7 +26,7 @@ public class Products {
     private int likes=0;
     private String  pickUpStation;
     private String productStatus;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id")
     private  Profile profile;
 

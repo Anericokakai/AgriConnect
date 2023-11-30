@@ -1,5 +1,6 @@
 package com.farmdigital.nerddevs.Posts.Service;
 
+import com.farmdigital.nerddevs.Posts.Dto.FetchProductDto;
 import com.farmdigital.nerddevs.Posts.Dto.ProductDto;
 import com.farmdigital.nerddevs.Posts.model.Products;
 import com.farmdigital.nerddevs.Posts.repository.ProductsRepository;
@@ -7,6 +8,7 @@ import com.farmdigital.nerddevs.Profile.model.Profile;
 import com.farmdigital.nerddevs.Profile.repository.ProfileRepository;
 import com.farmdigital.nerddevs.Registration.Repository.FarmerRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -38,9 +42,28 @@ public class PostService {
                 .productDescription(productDto.getProductDescription())
                 .pickUpStation(productDto.getPickUpStation()).build();
          productsRepository.save(products);
-         var AllUserProducts=productsRepository.findByProfileId(farmerProfile.getId());
-         LOGGER.info(String.format(AllUserProducts.toString() ));
-         return "yes";
+         List<Products> allUserProducts=productsRepository.findByProfileId(farmerProfile.getId());
+List<FetchProductDto> response= new ArrayList<>();
+         for(Products posts:allUserProducts){
+             FetchProductDto fetchedUserProduct= FetchProductDto.builder()
+                     .id(posts.getId())
+                     .imageUrl(posts.getImageUrl())
+                     .likes(posts.getLikes())
+                     .pickUpStation(posts.getPickUpStation())
+                     .postTime(posts.getPostTime())
+                     .productDescription(posts.getProductDescription())
+                     .productLocation(posts.getProductLocation())
+                     .productPrice(posts.getProductPrice())
+                     .productStatus(posts.getProductStatus())
+                     .productTittle(posts.getProductTittle())
+                     .quantity(posts.getQuantity())
+                     .build();
+
+            response.add(fetchedUserProduct);
+
+         }
+
+         return response;
 
     }
     public String timeCreatedAccout() {
