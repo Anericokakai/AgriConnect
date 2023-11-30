@@ -16,8 +16,6 @@ public class FamerPostController {
     @PostMapping("/create_post/{userId}")
     public ResponseEntity<?> createNewPost(@RequestBody ProductDto productDto,@PathVariable("userId")int  userId){
    var res=postService.createPost(productDto,userId);
-
-
         return  ResponseEntity.status(200).body(res);
 
     }
