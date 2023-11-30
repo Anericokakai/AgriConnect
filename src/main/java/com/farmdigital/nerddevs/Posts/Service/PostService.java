@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -28,9 +25,7 @@ public class PostService {
     public Object createPost(ProductDto productDto,int profileId) {
 
         Profile farmerProfile=profileRepository.findById(profileId).orElseThrow(()-> new EntityNotFoundException("Invalid profile id"));
-
 //      ! create a new product post based on the profile id of the user;
-
         Products products= Products.builder()
                 .postTime(timeCreatedAccout())
                 .profile(farmerProfile)
