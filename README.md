@@ -8,3 +8,4 @@ Agri Connect came from a simple quote ``everything will eventually be digital`` 
 2. if  farmers get access to the market, how can the supply work.
 3. how to make sure that farmers get instant payment ,after a success supply.
 4. and much more still to be explored ..
+connect farmers to theirmarket
